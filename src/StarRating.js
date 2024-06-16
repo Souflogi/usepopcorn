@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// CSS-in-JS styles for the star rating components
 const rateContainer = {
   display: "flex",
   alignItems: "center",
@@ -18,9 +19,11 @@ const numberStyle = {
   marginLeft: "1rem",
   lineHeight: "1",
 };
-/********************************************** */
+
+/*********************STARRATING COMPONENT************************* */
+
 function StarRating({
-  starsNum = 5,
+  starsCount = 10,
   size = 30,
   color = "orangered",
   className = "",
@@ -28,39 +31,54 @@ function StarRating({
   initialRating = 0,
   onSetExternalState,
 }) {
-  const [hoverRate, setHoverRate] = useState(initialRating);
-  const [rate, setRate] = useState(initialRating);
+  const [hoverRating, setHoverRating] = useState(initialRating); // State for managing hover effect
+  const [selectedRating, setSelectedRating] = useState(initialRating); // State for managing selected rating
 
-  const setRateHandler = v => {
-    setRate(v);
-    onSetExternalState !== undefined && onSetExternalState(v);
+  // Function to handle setting the rating
+  const handleSetRating = value => {
+    setSelectedRating(value);
+    // Call external state setter if provided
+    onSetExternalState !== undefined && onSetExternalState(value);
   };
 
   return (
     <div style={{ ...rateContainer, color: color }} className={className}>
       <div style={starContainerStyle}>
-        {Array.from({ length: starsNum }, (_, i) => i + 1).map(number => (
+        {Array.from({ length: starsCount }, (_, i) => i + 1).map(number => (
           <Star
             number={number}
             key={number}
-            hoverRate={hoverRate}
-            setHoverRate={setHoverRate}
-            rate={rate}
-            setRateHandler={setRateHandler}
+            hoverRating={hoverRating}
+            setHoverRating={setHoverRating}
+            selectedRating={selectedRating}
+            handleSetRating={handleSetRating}
             size={size}
           />
         ))}
       </div>
-      {hoverRate !== 0 && (
+      {/* Display message or rating number on hover */}
+      {hoverRating !== 0 && (
         <p style={{ ...numberStyle, fontSize: size - 10 }}>
-          {messages.length === starsNum ? messages[hoverRate - 1] : hoverRate}
+          {messages.length === starsCount
+            ? messages[hoverRating - 1]
+            : hoverRating}
         </p>
       )}
     </div>
   );
 }
-/***************************************************** */
-function Star({ number, hoverRate, setHoverRate, rate, setRateHandler, size }) {
+
+/**************************STAR COMPONENT*************************** */
+
+// Individual star component
+function Star({
+  number,
+  hoverRating,
+  setHoverRating,
+  selectedRating,
+  handleSetRating,
+  size,
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -68,12 +86,14 @@ function Star({ number, hoverRate, setHoverRate, rate, setRateHandler, size }) {
       viewBox="0 0 24 24"
       style={{
         ...StarStyle,
-        fill: number > (hoverRate || rate) ? "" : "currentColor ",
+        fill: number > (hoverRating || selectedRating) ? "" : "currentColor", // Fill star based on hover or selected rating
         height: `${size}px`,
       }}
-      onMouseEnter={() => setHoverRate(number)}
-      onMouseLeave={() => setHoverRate(rate || 0)}
-      onClick={() => setRateHandler(number)}
+      // Handle hover effects
+      onMouseEnter={() => setHoverRating(number)}
+      onMouseLeave={() => setHoverRating(selectedRating || 0)}
+      // Set the rating on click
+      onClick={() => handleSetRating(number)}
     >
       <path
         strokeLinecap="round"
@@ -84,4 +104,5 @@ function Star({ number, hoverRate, setHoverRate, rate, setRateHandler, size }) {
     </svg>
   );
 }
+
 export default StarRating;

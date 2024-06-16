@@ -17,37 +17,48 @@ import { useLocalStorageState } from "./useLocalStorageState";
 
 export default function App() {
   const { value: watched, setValue: setWatched } = useLocalStorageState(
-    [],
-    "watchedMovies"
+    [], // Initial state: an empty array
+    "watchedMovies" // Key for localStorage
   );
-  const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState(null);
+  const [query, setQuery] = useState(""); // State for search query
+  const [selectedId, setSelectedId] = useState(null); // State for selected movie ID
+
+  // Memoize the onCloseDetails function to avoid unnecessary re-renders
   const stableOnCloseDetails = useCallback(onCloseDetails, []);
+
+  // Custom hook to fetch movies based on the query and close details callback
   const { movies, loading, error } = useMovies(query, stableOnCloseDetails);
 
   /************************************** */
 
+  // Toggles the selected movie ID
   function onSelectMovie(id) {
     setSelectedId(selectedId => (id === selectedId ? null : id));
   }
+
   /************************************** */
 
+  // Adds a movie to the watched list if it's not already there
   function onAddWatched(movie) {
     setWatched(watched =>
       watched.some(m => m.id === selectedId) ? watched : [movie, ...watched]
     );
-    onCloseDetails();
+    onCloseDetails(); // Close the movie details view after adding
   }
+
   /************************************** */
 
+  // Closes the movie details view
   function onCloseDetails() {
     setSelectedId(null);
   }
+
   /************************************** */
+
+  // Deletes a movie from the watched list
   function onDeleteWatched(id) {
     setWatched(w => w.filter(m => m.id !== id));
-
-    onCloseDetails();
+    onCloseDetails(); // Close the movie details view after deleting
   }
 
   /************************************** */

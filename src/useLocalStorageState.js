@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
-const StoreWatchedMovies = (list, key) => {
+
+// Function to store data to localStorage
+const storeToLocalStorage = (list, key) => {
   const stringifiedData = JSON.stringify(list);
   localStorage.setItem(key, stringifiedData);
 };
 
-const retriveWatchedMovies = (initial, key) => {
-  const retrivedString = localStorage.getItem(key);
-  // if not ound returns empty array
-  return JSON.parse(retrivedString) || initial;
+// Function to retrieve data from localStorage
+const retrieveFromLocalStorage = (initial, key) => {
+  const retrievedString = localStorage.getItem(key);
+  // If not found, return the initial value (empty array)
+  return JSON.parse(retrievedString) || initial;
 };
 
+// Custom hook to manage state with localStorage
 export function useLocalStorageState(initialValue, key) {
   const [value, setValue] = useState(() =>
-    retriveWatchedMovies(initialValue, key)
+    retrieveFromLocalStorage(initialValue, key)
   );
+
   /*********************** */
   useEffect(() => {
-    StoreWatchedMovies(value, key); //updated list
+    storeToLocalStorage(value, key); // Update localStorage whenever value changes
   }, [value, key]);
 
   return { value, setValue };

@@ -4,28 +4,30 @@ import { useKeyReact } from "./useKeyReact";
 const SearchInput = ({ query, setQuery }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef();
+
+  // Custom hook to handle key press events
   useKeyReact(function Callback(e) {
     if (e.keyCode === 13 && document.activeElement !== inputRef.current) {
-      // inputRef.current.value = "";
-      setSearchTerm("");
-      inputRef.current.focus();
+      // If Enter key is pressed and input is not focused
+      setSearchTerm(""); // Clear search term
+      inputRef.current.focus(); // Focus the input field
     }
   });
 
   /*********************** */
   function handleChange(event) {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value); // Update search term with input value
   }
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setQuery(searchTerm);
+      setQuery(searchTerm); // Update query with search term after 1 second delay
     }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchTerm, setQuery]); // Empty dependency array ensures cleanup on unmount
+    return () => clearTimeout(timeoutId); // Clear timeout on cleanup or searchTerm change
+  }, [searchTerm, setQuery]);
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.focus(); // Focus the input field when component mounts
   }, []);
 
   return (
@@ -35,8 +37,9 @@ const SearchInput = ({ query, setQuery }) => {
       placeholder="Search movies..."
       value={searchTerm}
       onChange={handleChange}
-      ref={inputRef}
+      ref={inputRef} // Reference to input element
     />
   );
 };
+
 export default SearchInput;
