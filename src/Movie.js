@@ -1,5 +1,7 @@
+import pngplaceHolder from "./pngplaceHolder.jpg";
+
 function Movie({ movie, onClick = () => {} }) {
-  const imgLink = movie.Poster === "N/A" ? "logo192.png" : movie.Poster;
+  const imgLink = movie.Poster === "N/A" ? pngplaceHolder : movie.Poster;
 
   return (
     <li key={movie.imdbID} onClick={onClick.bind(null, movie.imdbID)}>

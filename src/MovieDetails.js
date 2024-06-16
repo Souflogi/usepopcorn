@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import pngplaceHolder from "./pngplaceHolder.jpg";
 import StarRating from "./StarRating";
 import LoadingIndicator from "./LoadingIndicator";
 import { useKeyReact } from "./useKeyReact";
@@ -108,7 +109,7 @@ function MovieDetails({
             ←
           </button>
           <img
-            src={poster === "N/A" ? "logo512.png" : poster} // Fallback to default image if poster is unavailable
+            src={poster === "N/A" ? pngplaceHolder : poster} // Fallback to default image if poster is unavailable
             alt={`poster of ${title} movie `}
           />
           <div className="details-overview">

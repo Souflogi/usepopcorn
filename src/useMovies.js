@@ -23,6 +23,7 @@ export function useMovies(query, callBack) {
         if (!response?.ok) throw new Error("Error message " + response.status);
 
         const data = await response.json();
+        console.log(data);
 
         if (data?.Response === "False") throw new Error(data.Error);
         setMovies(data.Search); // Update the movies state with fetched data
