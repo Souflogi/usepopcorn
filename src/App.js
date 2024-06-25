@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import NavBar from "./NavBar";
 import Main from "./Main";
 import MovieBox from "./MovieBox";
@@ -73,7 +73,7 @@ export default function App() {
       <Main>
         <MovieBox>
           {loading && <LoadingIndicator />}
-          {error?.state && <ErrorMessage error={error} />}
+          {error?.state && <ErrorMessage message={error.message} />}
           {!loading && !error?.state && (
             <MovieList>
               {movies.map(movie => (

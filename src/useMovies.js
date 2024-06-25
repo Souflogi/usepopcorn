@@ -20,7 +20,7 @@ export function useMovies(query, callBack) {
           `http://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=${query}`,
           { signal: controller.signal } // Attach the abort signal to the fetch request
         );
-        if (!response?.ok) throw new Error("Error message " + response.status);
+        if (!response?.ok) throw new Error("end point response error");
 
         const data = await response.json();
         console.log(data);
@@ -29,9 +29,17 @@ export function useMovies(query, callBack) {
         setMovies(data.Search); // Update the movies state with fetched data
         setError({ state: false }); // Reset error state after successful fetching
       } catch (err) {
-        if (err.name !== "AbortError")
+        if (err.name !== "AbortError") {
           // Ignore AbortError since it's expected on component unmount
-          setError({ state: true, message: err.message }); // Set error state if fetching fails
+          if (err instanceof TypeError) {
+            // Check if the error is a network error
+            console.log("Network error:", err);
+            setError({
+              state: true,
+              message: "Network error. Please check your internet connection.",
+            });
+          } else setError({ state: true, message: err.message }); // Set error state if fetching fails
+        }
       } finally {
         setLoading(false); // Set loading state to false at the end of fetching
       }

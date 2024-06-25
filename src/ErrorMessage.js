@@ -1,8 +1,8 @@
-function ErrorMessage({ error }) {
+function ErrorMessage({ message }) {
   return (
     <p className="error">
       <span>⛔</span>
-      {error?.message}
+      {message ? message : "--Error Message--"}
     </p>
   );
 }
