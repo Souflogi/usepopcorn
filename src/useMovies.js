@@ -28,7 +28,7 @@ export function useMovies(query, callBack) {
         if (data?.Response === "False") throw new Error("Movie not Found");
         //⛔
         setMovies(data.Search); // Update the movies state with fetched data
-        setError({ state: false }); // Reset error state after successful fetching
+        // setError({ state: false }); // Reset error state after successful fetching
       } catch (err) {
         console.log(err);
         if (err.name !== "AbortError") {
@@ -47,6 +47,7 @@ export function useMovies(query, callBack) {
       }
     };
 
+    // Query empty ------------------
     if (query === "") {
       setMovies([]); // Clear movies state if query is empty
       setError(null); // Clear error state if query is empty

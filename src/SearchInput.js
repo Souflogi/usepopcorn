@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useKeyReact } from "./useKeyReact";
 
-const SearchInput = ({ query, setQuery }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const SearchInput = ({ setQuery }) => {
+  const [searchTerm, setSearchTerm] = useState("batman");
   const inputRef = useRef();
 
   // Custom hook to handle key press events

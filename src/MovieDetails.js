@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import pngplaceHolder from "./pngplaceHolder.jpg";
+import placeholderImage from "./pngplaceHolder.jpg";
 import StarRating from "./StarRating";
 import LoadingIndicator from "./LoadingIndicator";
 import { useKeyReact } from "./useKeyReact";
+
 const API_KEY = "a337b59";
 
 function MovieDetails({
@@ -12,18 +13,18 @@ function MovieDetails({
   onDelete,
   watched,
 }) {
-  const [movie, setMovie] = useState({});
+  const [movieDetails, setMovieDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState(0);
 
   // Check if the selected movie is in the watched list
   const watchedMovie = watched.find(movie => movie.id === selectedId);
 
-  // Ref to keep track of the number of rating decisions
-  const ratingRef = useRef(0);
+  // Ref to keep track of the number of rating clicks on ratings before final decision.
+  const ratingClickCountRef = useRef(0);
 
   // Close movie details when the Escape key is pressed
-  useKeyReact(function (event) {
+  useKeyReact(event => {
     if (event.code === "Escape") {
       closeMovieDetails();
     }
@@ -42,36 +43,35 @@ function MovieDetails({
     Director: director,
     Genre: genre,
     Country: country,
-  } = movie;
+  } = movieDetails;
 
-  /********************************************** */
   // Handler for adding a movie to the watched list
-  const handleOnAdd = () => {
-    const watchedMovie = {
+  const handleAddToWatched = () => {
+    const newWatchedMovie = {
       id: selectedId,
       runtime: parseInt(runtime) || 0, // Convert runtime to integer, default to 0 if NaN
       userRating,
       imdbRating,
       title,
       poster,
-      countRatingDecisions: ratingRef.current, // Track how many times the user rated
+      countRatingDecisions: ratingClickCountRef.current, // Track how many times the user changed ratings before final one
     };
 
-    onAdd(watchedMovie);
+    console.log(newWatchedMovie);
+    onAdd(newWatchedMovie);
   };
 
-  /********************************************** */
-  // Increment the ratingRef.current whenever the userRating changes
+  // Increment the ratingClickCountRef.current whenever the userRating changes
+  // Ignore the initial one (0)
   useEffect(() => {
     if (userRating === 0) return;
-    ratingRef.current++;
-    console.log(ratingRef.current);
+    ratingClickCountRef.current++;
+    console.log(ratingClickCountRef.current);
   }, [userRating]);
 
-  /********************************************** */
   // Fetch movie details when selectedId changes
   useEffect(() => {
-    async function findTheMovie() {
+    async function fetchMovieDetails() {
       try {
         setIsLoading(true); // Set loading state to true
         const response = await fetch(
@@ -79,7 +79,7 @@ function MovieDetails({
         );
 
         const data = await response.json();
-        setMovie(data); // Set movie state with fetched data
+        setMovieDetails(data); // Set movieDetails state with fetched data
       } catch (err) {
         console.log(err);
       } finally {
@@ -87,10 +87,9 @@ function MovieDetails({
       }
     }
 
-    findTheMovie();
+    fetchMovieDetails();
   }, [selectedId]);
 
-  /********************************************** */
   // Update document title with movie title when title or selectedId changes
   useEffect(() => {
     document.title = `Movie | ${title || ""}`;
@@ -99,7 +98,6 @@ function MovieDetails({
     };
   }, [title, selectedId]);
 
-  /********************************************** */
   if (isLoading) return <LoadingIndicator />;
   else
     return (
@@ -109,8 +107,8 @@ function MovieDetails({
             ←
           </button>
           <img
-            src={poster === "N/A" ? pngplaceHolder : poster} // Fallback to default image if poster is unavailable
-            alt={`poster of ${title} movie `}
+            src={poster === "N/A" ? placeholderImage : poster} // Fallback to default image if poster is unavailable
+            alt={`Poster of ${title} movie `}
           />
           <div className="details-overview">
             <h2>{title}</h2>
@@ -122,7 +120,7 @@ function MovieDetails({
               <span>🌟</span> {imdbRating === "N/A" ? "No" : imdbRating} IMDb
               rating
             </p>
-            <p>Country : {country}</p>
+            <p>Country: {country}</p>
           </div>
         </header>
 
@@ -138,7 +136,7 @@ function MovieDetails({
                   onSetExternalState={setUserRating}
                 />
                 {userRating > 0 && (
-                  <button onClick={handleOnAdd} className="btn-add">
+                  <button onClick={handleAddToWatched} className="btn-add">
                     Add to watch list
                   </button>
                 )}
@@ -146,13 +144,13 @@ function MovieDetails({
             ) : (
               <>
                 <p style={{ color: "gold", textAlign: "center" }}>
-                  You Rated this move a {watchedMovie?.userRating} ⭐
+                  You Rated this movie {watchedMovie?.userRating} ⭐
                 </p>
                 <button
                   onClick={onDelete.bind(null, selectedId)}
                   className="btn-delete"
                 >
-                  remove from list
+                  Remove from list
                 </button>
               </>
             )}

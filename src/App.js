@@ -68,7 +68,7 @@ export default function App() {
     <>
       <NavBar>
         <Logo />
-        <SearchInput query={query} setQuery={setQuery} />
+        <SearchInput setQuery={setQuery} />
         <ResultCounter count={movies?.length} />
       </NavBar>
       <Main>
