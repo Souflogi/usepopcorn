@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import Main from "./Main";
 import MovieBox from "./MovieBox";
@@ -20,6 +20,7 @@ export default function App() {
     [], // Initial state: an empty array
     "watchedMovies" // Key for localStorage
   );
+
   const [query, setQuery] = useState(""); // State for search query
   const [selectedId, setSelectedId] = useState(null); // State for selected movie ID
 

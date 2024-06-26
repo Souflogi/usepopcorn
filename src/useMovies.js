@@ -8,6 +8,7 @@ export function useMovies(query, callBack) {
 
   useEffect(() => {
     // Invoke the callback function if provided
+    //in this case it's a function to close movie details UI
     callBack?.();
 
     const controller = new AbortController();
@@ -23,12 +24,13 @@ export function useMovies(query, callBack) {
         if (!response?.ok) throw new Error("end point response error");
 
         const data = await response.json();
-        console.log(data);
 
-        if (data?.Response === "False") throw new Error(data.Error);
+        if (data?.Response === "False") throw new Error("Movie not Found");
+        //⛔
         setMovies(data.Search); // Update the movies state with fetched data
         setError({ state: false }); // Reset error state after successful fetching
       } catch (err) {
+        console.log(err);
         if (err.name !== "AbortError") {
           // Ignore AbortError since it's expected on component unmount
           if (err instanceof TypeError) {
