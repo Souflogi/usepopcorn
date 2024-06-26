@@ -18,7 +18,7 @@ export function useMovies(query, callBack) {
         setLoading(true); // Set loading state to true at the start of fetching
         setError({ state: false }); // Reset error state before fetching
         const response = await fetch(
-          `http://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=${query}`,
+          `https://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=${query}`,
           { signal: controller.signal } // Attach the abort signal to the fetch request
         );
         if (!response?.ok) throw new Error("end point response error");
