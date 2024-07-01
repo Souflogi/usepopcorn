@@ -1,6 +1,6 @@
 function WatchedMovie({ movie, onClick }) {
   return (
-    <li onClick={onClick.bind(null, movie.id)}>
+    <li className="watched" onClick={onClick.bind(null, movie.id)}>
       <img src={movie.poster} alt={`a poster of ${movie.title}`} />
       <h3>{movie.title}</h3>
       <div>

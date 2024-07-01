@@ -55,7 +55,6 @@ function MovieDetails({
       countRatingDecisions: ratingClickCountRef.current, // Track how many times the user changed ratings before final one
     };
 
-    console.log(newWatchedMovie);
     onAdd(newWatchedMovie);
   };
 
@@ -64,7 +63,6 @@ function MovieDetails({
   useEffect(() => {
     if (userRating === 0) return;
     ratingClickCountRef.current++;
-    console.log(ratingClickCountRef.current);
   }, [userRating]);
 
   // Fetch movie details when selectedId changes
@@ -79,7 +77,6 @@ function MovieDetails({
         const data = await response.json();
         setMovieDetails(data); // Set movieDetails state with fetched data
       } catch (err) {
-        console.log(err);
       } finally {
         setIsLoading(false); // Set loading state to false
       }
