@@ -17,9 +17,6 @@ function MovieDetails({
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState(0);
 
-  // Check if the selected movie is in the watched list
-  const watchedMovie = watched.find(movie => movie.id === selectedId);
-
   // Ref to keep track of the number of rating clicks on ratings before final decision.
   const ratingClickCountRef = useRef(0);
 
@@ -30,10 +27,11 @@ function MovieDetails({
     }
   });
 
+  // Check if the selected movie is in the watched list
+  const watchedMovie = watched.find(movie => movie.id === selectedId);
   // Destructure movie details for easier access
   const {
     Title: title,
-    Year: year,
     Poster: poster,
     Runtime: runtime,
     imdbRating,
