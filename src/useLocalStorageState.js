@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+//-------------------------------------------------------------------HELPER FUNCTIONS
+
 // Function to store data to localStorage
 const storeToLocalStorage = (list, key) => {
   const stringifiedData = JSON.stringify(list);
@@ -12,7 +14,7 @@ const retrieveFromLocalStorage = (initial, key) => {
   // If not found, return the initial value (empty array)
   return JSON.parse(retrievedString) || initial;
 };
-
+//-------------------------------------------------------------------CUSTOM HOOK
 // Custom hook to manage state with localStorage
 export function useLocalStorageState(initialValue, key) {
   const [value, setValue] = useState(() =>

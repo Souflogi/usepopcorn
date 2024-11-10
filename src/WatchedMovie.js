@@ -3,7 +3,7 @@ function WatchedMovie({ movie, onClick }) {
     <li className="watched" onClick={onClick.bind(null, movie.id)}>
       <img src={movie.poster} alt={`a poster of ${movie.title}`} />
       <h3>{movie.title}</h3>
-      <div>
+      <div className="watched-details">
         <p>
           <span>⭐</span>
           <span>{movie.imdbRating}</span>

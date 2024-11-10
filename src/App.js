@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import NavBar from "./NavBar";
 import Main from "./Main";
 import MovieBox from "./MovieBox";
@@ -82,6 +82,7 @@ export default function App() {
                   key={movie.imdbID}
                   movie={movie}
                   onClick={onSelectMovie}
+                  selectedId={selectedId}
                 />
               ))}
             </MovieList>

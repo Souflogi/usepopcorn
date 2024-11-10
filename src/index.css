@@ -1,6 +1,6 @@
 :root {
-  --color-primary: #b19b20;
-  --color-primary-light: #b8ba4c;
+  --color-primary: #8b7a09;
+  --color-primary-light: #b0b17f;
   --color-text: #dee2e6;
   --color-text-dark: #5a5e61;
   --color-background-100: #343a40;
@@ -145,34 +145,37 @@ body {
 
 .list {
   list-style: none;
-  padding: 0.8rem 0;
+  padding: 1rem;
   overflow: scroll;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
-.list-watched {
+
+/* .list-watched {
   height: calc(100% - 9rem);
-}
+} */
 
 .list li {
-  position: relative;
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 2.4rem;
-  font-size: 1.6rem;
-  align-items: center;
-
-  /* padding: 1.6rem 3.2rem; */
-  border: 1px solid var(--color-background-100);
-
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  grid-template-rows: 1fr;
+  /* Single row layout */
+  grid-template-columns: 1fr;
+  /* Single column layout */
   background-color: var(--color-primary);
 }
 
 .list li.watched {
   background-color: #7b8d5e;
+  padding: 1rem;
+}
+
+.list li.selected {
+  padding: 2rem;
 }
 
 .list.list-movies li {
@@ -181,48 +184,64 @@ body {
 }
 
 .list.list-movies li:hover {
-  background-color: var(--color-background-100);
+  transform: scale(0.95);
 }
 
 .list img {
-  height: 10rem;
-  width: 8rem;
-  grid-row: 1 / -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  grid-row: 1 / 2;
+  /* Span the single row */
+  grid-column: 1 / 2;
+  /* Span the single column */
+  z-index: 1;
+  /* Place it behind details */
+}
+
+.list .movie-details {
+  grid-row: 1 / 2;
+  /* Same row as the image */
+  grid-column: 1 / 2;
+  /* Same column as the image */
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.70) 70%, transparent 90%);
+  /* Fading effect */
+  color: rgb(216, 213, 213);
+  text-align: center;
+  z-index: 2;
+  /* Place it above the image */
+  align-self: end;
+  /* Align the details to the bottom */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20%;
+  height: 60%;
+}
+
+.list .watched-details {
+  display: flex;
 }
 
 .list h3 {
-  font-size: 1.8rem;
-}
-
-.list div {
-  display: flex;
-  align-items: center;
-  gap: 2.4rem;
+  font-size: 2.2rem;
 }
 
 .list p {
+  align-self: flex-end;
+  font-size: 1.2rem;
+  font-weight: bold;
   display: flex;
   align-items: center;
   gap: 0.8rem;
 }
 
-.btn-delete {
-  border: none;
-  background-color: var(--color-red);
-  color: var(--color-background-900);
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-  padding: .8rem 1rem;
-  color: #fff;
 
-  border-radius: 8px;
-}
 
-.btn-delete:hover {
-  background-color: var(--color-red-dark);
-}
+
 
 /* ******* */
 
@@ -308,11 +327,12 @@ body {
 }
 
 
+.details-actions {
+  display: flex;
+  justify-content: space-evenly;
+}
 
-
-.btn-add {
-  background-color: var(--color-primary);
-  color: var(--color-text);
+.btn-long {
   border: none;
   border-radius: 10rem;
   font-size: 1.4rem;
@@ -322,9 +342,39 @@ body {
   transition: all 0.3s;
 }
 
+.btn-back {
+  background-color: #fff;
+  color: var(--color-background-500);
+
+}
+
+.btn-back:hover {
+  background-color: #adb0bd;
+}
+
+
+.btn-add {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
+
 .btn-add:hover {
   background-color: var(--color-primary-light);
 }
+
+.btn-delete {
+  border: none;
+  background-color: var(--color-red);
+  color: var(--color-background-900);
+}
+
+.btn-delete:hover {
+  background-color: var(--color-red-dark);
+}
+
+
+
+
 
 .seconds {
   background-color: var(--color-background-100);
@@ -336,27 +386,7 @@ body {
   margin-top: 2.4rem;
 }
 
-.btn-back {
-  position: absolute;
-  top: 0.6rem;
-  left: 0.6rem;
-  height: 3.2rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: none;
-  /* background-color: var(--color-text); */
-  background-color: #fff;
-  color: var(--color-background-500);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
-  font-family: sans-serif;
-  font-size: 2.4rem;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 
 
 .loading-indicator {

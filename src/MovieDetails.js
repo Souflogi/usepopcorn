@@ -98,9 +98,6 @@ function MovieDetails({
     return (
       <div className="details">
         <header>
-          <button className="btn-back" onClick={closeMovieDetails}>
-            ←
-          </button>
           <img
             src={poster === "N/A" ? placeholderImage : poster} // Fallback to default image if poster is unavailable
             alt={`Poster of ${title} movie `}
@@ -131,7 +128,10 @@ function MovieDetails({
                   onSetExternalState={setUserRating}
                 />
                 {userRating > 0 && (
-                  <button onClick={handleAddToWatched} className="btn-add">
+                  <button
+                    onClick={handleAddToWatched}
+                    className="btn-long btn-add"
+                  >
                     Add to watch list
                   </button>
                 )}
@@ -141,12 +141,20 @@ function MovieDetails({
                 <p style={{ color: "gold", textAlign: "center" }}>
                   You Rated this movie {watchedMovie?.userRating} ⭐
                 </p>
-                <button
-                  onClick={onDelete.bind(null, selectedId)}
-                  className="btn-delete"
-                >
-                  Remove from list
-                </button>
+                <div className="details-actions">
+                  <button
+                    onClick={onDelete.bind(null, selectedId)}
+                    className="btn-long btn-delete"
+                  >
+                    Remove from list 🗑️
+                  </button>
+                  <button
+                    className="btn-long btn-back"
+                    onClick={closeMovieDetails}
+                  >
+                    Back 🔙
+                  </button>
+                </div>
               </>
             )}
           </div>

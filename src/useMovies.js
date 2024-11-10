@@ -3,7 +3,7 @@ const API_KEY = "a337b59";
 
 export function useMovies(query, callBack) {
   const [movies, setMovies] = useState([]);
-  const [error, setError] = useState({ state: false });
+  const [error, setError] = useState({ state: false, message: "" });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export function useMovies(query, callBack) {
     return () => {
       controller.abort(); // Abort the fetch request on component unmount or query change
     };
-  }, [query, callBack]); // Effect dependencies: run effect when query or callBack changes
+  }, [query, callBack]); // Effect dependencies: run effect when query changes / callBack is Memoized.
 
   return { movies, loading, error }; // Return the movies, loading, and error states
 }
